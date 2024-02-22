@@ -8,6 +8,7 @@ import com.study.todoparty.entity.Todo;
 import com.study.todoparty.entity.User;
 import com.study.todoparty.repository.CommentRepository;
 import com.study.todoparty.repository.TodoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,13 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
 
-    public CommentResponseDto updateComment(Long todoId, Long commentId, UpdateCommentRequestDto request, User user) {
+    @Transactional
+    public CommentResponseDto updateComment(Long todoId, UpdateCommentRequestDto request, User user) {
         todoRepository.findById(todoId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
         );
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
+        Comment comment = commentRepository.findById(request.getId()).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글 ID 입니다")
         );
 
@@ -47,8 +49,6 @@ public class CommentService {
         }
 
         comment.setContent(request.getContent());
-
-        commentRepository.save(comment);
 
         return new CommentResponseDto(comment);
     }

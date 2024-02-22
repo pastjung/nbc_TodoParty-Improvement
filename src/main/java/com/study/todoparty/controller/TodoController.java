@@ -57,10 +57,10 @@ public class TodoController {
     // 선택한 할일카드 수정 기능 API : 할일카드의 제목, 작성 내용을 수정 가능
     // 조건 : 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 할일카드 만 수정 가능
     // 반환 정보 : 수정된 할일 정보(제목, 내용)
-    @PutMapping("/update/{todoId}")
-    public ResponseEntity<CommonResponseDto> updateTodo(@PathVariable Long todoId, @RequestBody UpdateTodoRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PutMapping("/update")
+    public ResponseEntity<CommonResponseDto> updateTodo(@RequestBody UpdateTodoRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try{
-            TodoResponseDto response = todoService.updateTodo(todoId, request, userDetails.getUser());
+            TodoResponseDto response = todoService.updateTodo(request, userDetails.getUser());
             return ResponseEntity.ok().body(response);
         } catch(IllegalArgumentException e){
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
@@ -70,7 +70,7 @@ public class TodoController {
     // 할일카드 완료 기능 API : 완료처리한 할일 카드는 목록조회시 완료 여부 필드가 TRUE 로 내려감 (기본값은 False)
     // 조건 : 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 할일카드 만 완료 가능
     // 반환 정보 : ResponseEntity<CommonResponse>
-    @PutMapping("/complete/{todoId}")
+    @PatchMapping("/complete/{todoId}") // Put : 전체 수정, Patch : 부분 수정
     public ResponseEntity<CommonResponseDto> completeTodo(@PathVariable Long todoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try{
             todoService.completeTodo(todoId, userDetails.getUser());

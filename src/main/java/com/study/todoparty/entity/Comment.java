@@ -30,4 +30,9 @@ public class Comment extends TimeStamped{
     public Comment(CreateCommentRequestDto request){
         this.content = request.getContent();
     }
+
+    public void setTodo(Todo todo){
+        this.todo = todo;
+        todo.getComments().add(this);
+    }
 }

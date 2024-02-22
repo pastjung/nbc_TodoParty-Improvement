@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "User")
 @Table(name = "user")
 @Getter
@@ -25,9 +28,13 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum userRole;
 
+    @OneToMany(mappedBy = "user")
+    private List<Todo> todo;
+
     public User(String username, String password, UserRoleEnum userRole) {
         this.username = username;
         this.password = password;
         this.userRole = userRole;
+        this.todo = new ArrayList<>();
     }
 }

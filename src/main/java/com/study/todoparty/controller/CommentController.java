@@ -32,10 +32,11 @@ public class CommentController {
     // 조건 : 토큰을 검사하여, 유요한 토큰이면서 해당 사용자가 작성한 댓글만 수정 가능
     // 조건2 : 선택한 할일의 DB 저장 유무 확인
     // 반환 정보 : 수정된 댓글
-    @PutMapping("/{todoId}/comments/update/{commentId}")
-    public ResponseEntity<CommonResponseDto> updateComment(@PathVariable Long todoId, @PathVariable Long commentId, @RequestBody UpdateCommentRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+    @PutMapping("/{todoId}/comments/update")
+    public ResponseEntity<CommonResponseDto> updateComment(@PathVariable Long todoId, @RequestBody UpdateCommentRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try{
-            CommentResponseDto response = commentService.updateComment(todoId, commentId, request, userDetails.getUser());
+            CommentResponseDto response = commentService.updateComment(todoId, request, userDetails.getUser());
             return ResponseEntity.ok().body(response);
         } catch(IllegalArgumentException e){
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
