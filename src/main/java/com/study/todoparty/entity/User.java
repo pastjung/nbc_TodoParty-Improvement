@@ -8,8 +8,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "User")
-@Table(name = "user")
+@Entity(name = "Users")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
