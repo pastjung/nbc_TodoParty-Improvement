@@ -1,4 +1,4 @@
-package com.study.todoparty.config.jwt.UserDetails;
+package com.study.todoparty.config.jwt;
 
 import com.study.todoparty.entity.User;
 import com.study.todoparty.entity.UserRoleEnum;

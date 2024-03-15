@@ -1,8 +1,8 @@
-package com.study.todoparty.config.jwt.Filter;
+package com.study.todoparty.config.Filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.todoparty.config.jwt.JwtUtil;
-import com.study.todoparty.config.jwt.UserDetails.UserDetailsServiceImpl;
+import com.study.todoparty.config.jwt.UserDetailsServiceImpl;
 import com.study.todoparty.dto.responseDto.CommonResponseDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

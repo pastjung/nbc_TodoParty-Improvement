@@ -1,10 +1,10 @@
 package com.study.todoparty.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.todoparty.config.jwt.Filter.JwtAuthenticationFilter;
-import com.study.todoparty.config.jwt.Filter.JwtAuthorizationFilter;
+import com.study.todoparty.config.Filter.JwtAuthenticationFilter;
+import com.study.todoparty.config.Filter.JwtAuthorizationFilter;
 import com.study.todoparty.config.jwt.JwtUtil;
-import com.study.todoparty.config.jwt.UserDetails.UserDetailsServiceImpl;
+import com.study.todoparty.config.jwt.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

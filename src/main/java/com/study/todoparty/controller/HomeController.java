@@ -5,7 +5,7 @@ import com.study.todoparty.dto.requestDto.LoginRequestDto;
 import com.study.todoparty.dto.requestDto.SignupRequestDto;
 import com.study.todoparty.dto.responseDto.CommonResponseDto;
 import com.study.todoparty.entity.UserRoleEnum;
-import com.study.todoparty.service.UserService;
+import com.study.todoparty.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class HomeController {
     private final JwtUtil jwtUtil;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     // 회원가입 : 인가(Authorization)
     // POST : http://localhost:8080/users/signup
@@ -29,12 +29,7 @@ public class HomeController {
      */
     @PostMapping("/signup")
     public ResponseEntity<CommonResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto){
-        try {
-            userService.signup(requestDto);
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(new CommonResponseDto("중복된 username 입니다.", HttpStatus.BAD_REQUEST.value()));
-        }
-
+        userServiceImpl.signup(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
     }
@@ -49,19 +44,15 @@ public class HomeController {
      */
     @GetMapping("/login")
     public ResponseEntity<CommonResponseDto> login(@RequestBody LoginRequestDto requestDto) {
-        try {
-            // 로그인하는 유저의 권한
-            UserRoleEnum userRole = userService.login(requestDto);
+        // 로그인하는 유저의 권한
+        UserRoleEnum userRole = userServiceImpl.login(requestDto);
 
-            // 토큰 생성
-            String token = jwtUtil.createToken(requestDto.getUsername(), userRole);
+        // 토큰 생성
+        String token = jwtUtil.createToken(requestDto.getUsername(), userRole);
 
-            // 토큰 헤더 설정 및 반환
-            return ResponseEntity.ok()
-                    .header(jwtUtil.AUTHORIZATION_HEADER, token)
-                    .body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        // 토큰 헤더 설정 및 반환
+        return ResponseEntity.ok()
+            .header(jwtUtil.AUTHORIZATION_HEADER, token)
+            .body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
     }
 }
