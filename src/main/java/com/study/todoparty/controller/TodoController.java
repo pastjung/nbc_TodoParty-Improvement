@@ -5,7 +5,7 @@ import com.study.todoparty.dto.requestDto.CreateTodoRequestDto;
 import com.study.todoparty.dto.requestDto.UpdateTodoRequestDto;
 import com.study.todoparty.dto.responseDto.CommonResponseDto;
 import com.study.todoparty.dto.responseDto.TodoResponseDto;
-import com.study.todoparty.service.TodoService;
+import com.study.todoparty.service.TodoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/todos")
 public class TodoController {
-    private final TodoService todoService;
+    private final TodoServiceImpl todoServiceImpl;
 
     // 할일카드 작성 기능 API : 할일 제목,할일 내용, 작성일을 저장
     // 조건 : 토큰을 검사하여, 유효한 토큰일 경우에만 할일 작성 가능
     // 반환 정보 : ResponseEntity<CommonResponse>
     @PostMapping("/create")
     public ResponseEntity<TodoResponseDto> createTodo(@RequestBody CreateTodoRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        TodoResponseDto response = todoService.createTodo(request, userDetails.getUser());
+        TodoResponseDto response = todoServiceImpl.createTodo(request, userDetails.getUser());
         return ResponseEntity.ok().body(response);
     }
 
@@ -35,7 +35,7 @@ public class TodoController {
     // 반환 정보 : 할일 정보(할일 제목,할일 내용, 작성자 , 작성일)
     @GetMapping("/find/{todoId}")
     public ResponseEntity<CommonResponseDto> findTodo(@PathVariable Long todoId){
-        TodoResponseDto response = todoService.getTodo(todoId);
+        TodoResponseDto response = todoServiceImpl.getTodo(todoId);
         return ResponseEntity.ok().body(response);
     }
 
@@ -44,7 +44,7 @@ public class TodoController {
     // 반환 정보 : 회원별 할일(할일 제목, 작성자, 작성일, 완료 여부) 목록
     @GetMapping("/list")
     public ResponseEntity<Map<String, List<TodoResponseDto>>> listTodosByUser() {
-        Map<String, List<TodoResponseDto>> todosByUser = todoService.listTodosByUser();
+        Map<String, List<TodoResponseDto>> todosByUser = todoServiceImpl.listTodosByUser();
         return ResponseEntity.ok().body(todosByUser);
     }
 
@@ -54,7 +54,7 @@ public class TodoController {
     // 반환 정보 : 수정된 할일 정보(제목, 내용)
     @PutMapping("/update")
     public ResponseEntity<CommonResponseDto> updateTodo(@RequestBody UpdateTodoRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        TodoResponseDto response = todoService.updateTodo(request, userDetails.getUser());
+        TodoResponseDto response = todoServiceImpl.updateTodo(request, userDetails.getUser());
         return ResponseEntity.ok().body(response);
     }
 
@@ -63,7 +63,7 @@ public class TodoController {
     // 반환 정보 : ResponseEntity<CommonResponse>
     @PatchMapping("/complete/{todoId}") // Put : 전체 수정, Patch : 부분 수정
     public ResponseEntity<CommonResponseDto> completeTodo(@PathVariable Long todoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        todoService.completeTodo(todoId, userDetails.getUser());
+        todoServiceImpl.completeTodo(todoId, userDetails.getUser());
         return ResponseEntity.ok().body(new CommonResponseDto("할일이 완료되었습니다.", HttpStatus.OK.value()));
     }
 }
