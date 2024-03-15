@@ -35,12 +35,8 @@ public class CommentController {
 
     @PutMapping("/{todoId}/comments/update")
     public ResponseEntity<CommonResponseDto> updateComment(@PathVariable Long todoId, @RequestBody UpdateCommentRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try{
-            CommentResponseDto response = commentService.updateComment(todoId, request, userDetails.getUser());
-            return ResponseEntity.ok().body(response);
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        CommentResponseDto response = commentService.updateComment(todoId, request, userDetails.getUser());
+        return ResponseEntity.ok().body(response);
     }
 
     // 댓글 삭제 API
@@ -49,11 +45,7 @@ public class CommentController {
     // 반환 정보 : 성공 메시지, 상태코드 = ResponseEntity<CommonResponse>
     @DeleteMapping("/{todoId}/comments/delete/{commentId}")
     public ResponseEntity<CommonResponseDto> deleteComment(@PathVariable Long todoId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try{
-            commentService.deleteComment(todoId, commentId, userDetails.getUser());
-            return ResponseEntity.ok().body(new CommonResponseDto("댓글이 삭제되었습니다.", HttpStatus.OK.value()));
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        commentService.deleteComment(todoId, commentId, userDetails.getUser());
+        return ResponseEntity.ok().body(new CommonResponseDto("댓글이 삭제되었습니다.", HttpStatus.OK.value()));
     }
 }
