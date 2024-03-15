@@ -43,7 +43,7 @@ public class Todo extends TimeStamped{
     }
 
     public void setUser(User user){
-        this.user = user;
         user.getTodo().add(this);
+        this.user = user;
     }
 }
