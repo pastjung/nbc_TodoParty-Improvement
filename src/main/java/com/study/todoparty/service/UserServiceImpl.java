@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService{
     private final String ADMIN_TOKEN = "f679d89c320cc4adb72b7647a64ccbe520406dc3ee4578b44bcffbfa7ebbb85e30b964306b6398d3a2d7098ecd1bc203551e356ac5ec4a5ee0c7dc899fb704c5";
 
     // 회원가입 : 인가(Authorization)
+    @Override
     public void signup(SignupRequestDto requestDto){
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword()); // 비밀번호 암호화
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService{
     }
 
     // 로그인 : 인증(Authentication)
+    @Override
     @PostMapping("/login")
     public UserRoleEnum login(@RequestBody LoginRequestDto requestDto){
         String username = requestDto.getUsername();
