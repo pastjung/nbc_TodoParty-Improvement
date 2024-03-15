@@ -1,5 +1,7 @@
 package com.study.todoparty.service;
 
+import com.study.todoparty.config.exception.customException.CommentNotFoundException;
+import com.study.todoparty.config.exception.customException.TodoNotFoundException;
 import com.study.todoparty.dto.requestDto.CreateCommentRequestDto;
 import com.study.todoparty.dto.requestDto.UpdateCommentRequestDto;
 import com.study.todoparty.dto.responseDto.CommentResponseDto;
@@ -21,7 +23,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public CommentResponseDto createComment(Long todoId, CreateCommentRequestDto request, User user) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
+                () -> new TodoNotFoundException("존재하지 않는 할일 카드 ID 입니다")
         );
 
         System.out.println("request.getContent() = " + request.getContent());
@@ -39,11 +41,11 @@ public class CommentServiceImpl implements CommentService{
     @Transactional
     public CommentResponseDto updateComment(Long todoId, UpdateCommentRequestDto request, User user) {
         todoRepository.findById(todoId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
+                () -> new TodoNotFoundException("존재하지 않는 할일 카드 ID 입니다")
         );
 
         Comment comment = commentRepository.findById(request.getId()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 댓글 ID 입니다")
+                () -> new CommentNotFoundException("존재하지 않는 댓글 ID 입니다")
         );
 
         if (!comment.getUser().getId().equals(user.getId())) {
@@ -58,11 +60,11 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public void deleteComment(Long todoId, Long commentId, User user) {
         todoRepository.findById(todoId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
+                () -> new TodoNotFoundException("존재하지 않는 할일 카드 ID 입니다")
         );
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 댓글 ID 입니다")
+                () -> new CommentNotFoundException("존재하지 않는 댓글 ID 입니다")
         );
 
         if (!comment.getUser().getId().equals(user.getId())) {
