@@ -1,6 +1,6 @@
 package com.study.todoparty.controller;
 
-import com.study.todoparty.config.jwt.UserDetails.UserDetailsImpl;
+import com.study.todoparty.config.jwt.UserDetailsImpl;
 import com.study.todoparty.dto.requestDto.CreateTodoRequestDto;
 import com.study.todoparty.dto.requestDto.UpdateTodoRequestDto;
 import com.study.todoparty.dto.responseDto.CommonResponseDto;
@@ -27,7 +27,6 @@ public class TodoController {
     @PostMapping("/create")
     public ResponseEntity<TodoResponseDto> createTodo(@RequestBody CreateTodoRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails){
         TodoResponseDto response = todoService.createTodo(request, userDetails.getUser());
-
         return ResponseEntity.ok().body(response);
     }
 
@@ -36,12 +35,8 @@ public class TodoController {
     // 반환 정보 : 할일 정보(할일 제목,할일 내용, 작성자 , 작성일)
     @GetMapping("/find/{todoId}")
     public ResponseEntity<CommonResponseDto> findTodo(@PathVariable Long todoId){
-        try{
-            TodoResponseDto response = todoService.getTodo(todoId);
-            return ResponseEntity.ok().body(response);
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        TodoResponseDto response = todoService.getTodo(todoId);
+        return ResponseEntity.ok().body(response);
     }
 
     // 할일카드 목록 조회 기능 API : 회원별로 각각 나누어서 할일 목록이 조회
@@ -59,12 +54,8 @@ public class TodoController {
     // 반환 정보 : 수정된 할일 정보(제목, 내용)
     @PutMapping("/update")
     public ResponseEntity<CommonResponseDto> updateTodo(@RequestBody UpdateTodoRequestDto request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try{
-            TodoResponseDto response = todoService.updateTodo(request, userDetails.getUser());
-            return ResponseEntity.ok().body(response);
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        TodoResponseDto response = todoService.updateTodo(request, userDetails.getUser());
+        return ResponseEntity.ok().body(response);
     }
 
     // 할일카드 완료 기능 API : 완료처리한 할일 카드는 목록조회시 완료 여부 필드가 TRUE 로 내려감 (기본값은 False)
@@ -72,11 +63,7 @@ public class TodoController {
     // 반환 정보 : ResponseEntity<CommonResponse>
     @PatchMapping("/complete/{todoId}") // Put : 전체 수정, Patch : 부분 수정
     public ResponseEntity<CommonResponseDto> completeTodo(@PathVariable Long todoId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        try{
-            todoService.completeTodo(todoId, userDetails.getUser());
-            return ResponseEntity.ok().body(new CommonResponseDto("할일이 완료되었습니다.", HttpStatus.OK.value()));
-        } catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-        }
+        todoService.completeTodo(todoId, userDetails.getUser());
+        return ResponseEntity.ok().body(new CommonResponseDto("할일이 완료되었습니다.", HttpStatus.OK.value()));
     }
 }
