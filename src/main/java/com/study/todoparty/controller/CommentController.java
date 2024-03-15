@@ -1,6 +1,6 @@
 package com.study.todoparty.controller;
 
-import com.study.todoparty.config.jwt.UserDetails.UserDetailsImpl;
+import com.study.todoparty.config.jwt.UserDetailsImpl;
 import com.study.todoparty.dto.requestDto.CreateCommentRequestDto;
 import com.study.todoparty.dto.requestDto.UpdateCommentRequestDto;
 import com.study.todoparty.dto.responseDto.CommentResponseDto;

@@ -1,5 +1,6 @@
-package com.study.todoparty.config.jwt.UserDetails;
+package com.study.todoparty.config.jwt;
 
+import com.study.todoparty.config.jwt.UserDetailsImpl;
 import com.study.todoparty.entity.User;
 import com.study.todoparty.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
