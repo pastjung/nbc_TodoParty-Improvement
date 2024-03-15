@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TodoAop {
 
-    @Pointcut("execution(* com.study.todoparty.controller.UserController.*(..))")
+    @Pointcut("execution(* com.study.todoparty.controller.TodoController.*(..))")
     private void cut() {}
 
     @Before("cut()")
