@@ -41,7 +41,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // MySQL Driver : MySQL DB 연결
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    //runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
 
     // JWT : JSON Web Token(JWT)를 생성, 유효성 검사 및 해석
     // 사용처 : HS256 알고리즘
