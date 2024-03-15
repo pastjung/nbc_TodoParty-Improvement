@@ -1,5 +1,6 @@
 package com.study.todoparty.service;
 
+import com.study.todoparty.config.exception.customException.UserNotFoundException;
 import com.study.todoparty.dto.requestDto.LoginRequestDto;
 import com.study.todoparty.dto.requestDto.SignupRequestDto;
 import com.study.todoparty.entity.User;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService{
 
         // 유저 정보 확인
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("등록된 유저가 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("등록된 유저가 없습니다."));
 
         // 비밀번호 확인
         if(!passwordEncoder.matches(password, user.getPassword())){
