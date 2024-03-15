@@ -3,69 +3,32 @@ package com.study.todoparty.service;
 import com.study.todoparty.dto.requestDto.CreateCommentRequestDto;
 import com.study.todoparty.dto.requestDto.UpdateCommentRequestDto;
 import com.study.todoparty.dto.responseDto.CommentResponseDto;
-import com.study.todoparty.entity.Comment;
-import com.study.todoparty.entity.Todo;
 import com.study.todoparty.entity.User;
-import com.study.todoparty.repository.CommentRepository;
-import com.study.todoparty.repository.TodoRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class CommentService {
-    private final TodoRepository todoRepository;
-    private final CommentRepository commentRepository;
+public interface CommentService {
+    /**
+     * 댓글 생성
+     * @param todoId 할일 카드 ID
+     * @param request 요청 정보
+     * @param user 요청자 정보
+     * @return 생성된 댓글 응답 정보
+     */
+    CommentResponseDto createComment(Long todoId, CreateCommentRequestDto request, User user);
 
-    public CommentResponseDto createComment(Long todoId, CreateCommentRequestDto request, User user) {
-        Todo todo = todoRepository.findById(todoId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
-        );
+    /**
+     * 댓글 수정
+     * @param todoId 할일 카드 ID
+     * @param request 요청 정보
+     * @param user 요청자 정보
+     * @return 수정된 댓글 응답 정보
+     */
+    CommentResponseDto updateComment(Long todoId, UpdateCommentRequestDto request, User user);
 
-        System.out.println("request.getContent() = " + request.getContent());
-
-        Comment comment = new Comment(request);
-        comment.setUser(user);
-        comment.setTodo(todo);
-
-        commentRepository.save(comment);
-
-        return new CommentResponseDto(comment);
-    }
-
-    @Transactional
-    public CommentResponseDto updateComment(Long todoId, UpdateCommentRequestDto request, User user) {
-        todoRepository.findById(todoId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
-        );
-
-        Comment comment = commentRepository.findById(request.getId()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 댓글 ID 입니다")
-        );
-
-        if (!comment.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
-        }
-
-        comment.setContent(request.getContent());
-
-        return new CommentResponseDto(comment);
-    }
-
-    public void deleteComment(Long todoId, Long commentId, User user) {
-        todoRepository.findById(todoId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 할일 카드 ID 입니다")
-        );
-
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 댓글 ID 입니다")
-        );
-
-        if (!comment.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
-        }
-
-        commentRepository.delete(comment);
-    }
+    /**
+     * 댓글 삭제
+     * @param todoId 할일 카드 ID
+     * @param commentId 댓글 ID
+     * @param user 요청자 정보
+     */
+    void deleteComment(Long todoId, Long commentId, User user);
 }
